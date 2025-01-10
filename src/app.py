@@ -24,11 +24,15 @@ execute_model = api.model(
 
 
 @api.route("/execute")
-class DepositResolver(Resource):
+class QueueWorker(Resource):
     @api.doc(responses={200: "Query executed successfully", 400: "Invalid arguments"})
     @api.expect(execute_model)
     def post(self):
-        result = DatabaseWorker.execute_query()
+        data = request.json
+        db_number = data["db_number"]
+        query = data["query"]
+        logging.info(f"db_number: {db_number}, query: {query}")
+        result = DatabaseWorker.execute_query(db_number, query)
         return result, HTTPStatus.OK
 
 
