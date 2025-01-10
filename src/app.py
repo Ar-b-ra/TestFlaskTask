@@ -22,7 +22,6 @@ execute_model = api.model(
 )
 
 
-
 @api.route("/execute")
 class QueueWorker(Resource):
     @api.doc(responses={200: "Query executed successfully", 400: "Invalid arguments"})
