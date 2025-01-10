@@ -1,5 +1,6 @@
 import sqlite3
 from pathlib import Path
+from typing import Iterable
 from src.config import DATABASE_DIR
 
 
@@ -9,7 +10,7 @@ class DatabaseWorker:
         return (Path(DATABASE_DIR) / f"database_{db_name}").with_suffix(".db")
 
     @classmethod
-    def execute_query(cls, db_number: str | int, query: str) -> any:
+    def execute_query(cls, db_number: str | int, query: str) -> Iterable:
         db = cls.get_db_by_name(db_number)
         try:
             with sqlite3.connect(db) as conn:

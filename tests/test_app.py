@@ -6,6 +6,7 @@ from http import HTTPStatus
 
 URL = "/execute"
 
+
 @pytest.fixture(autouse=True)
 def cleanup_after_tests():
     """Фикстура для очистки тестовых баз данных после каждого теста."""
@@ -16,10 +17,12 @@ def cleanup_after_tests():
         if os.path.exists(db_path):
             os.remove(db_path)
 
+
 def test_get_db_path():
     db_number = 1
     expected_path = os.path.join("databases", "database_1.db")
     assert DatabaseWorker.get_db_by_name(db_number) == Path(expected_path)
+
 
 def test_execute_query_create_table(client):
     response = client.post(
@@ -31,6 +34,7 @@ def test_execute_query_create_table(client):
     )
     assert response.status_code == HTTPStatus.OK
     assert response.json == {"message": "Query executed successfully"}
+
 
 def test_execute_query_insert_data(client):
     response = client.post(
@@ -49,9 +53,11 @@ def test_execute_query_invalid_sql(client):
     assert response.status_code == HTTPStatus.BAD_REQUEST
     assert "error" in response.json
 
+
 def test_execute_query_missing_fields(client):
     response = client.post(URL, json={})
     assert response.status_code == HTTPStatus.BAD_REQUEST
+
 
 def test_execute_query_multiple_databases(client):
     # Создаем таблицу в базе данных 1
