@@ -38,7 +38,11 @@ class QueueWorker(Resource):
         query = data["query"]
         logging.info(f"db_number: {db_number}, query: {query}")
         result = DatabaseWorker.execute_query(db_number, query)
-        return result, HTTPStatus.OK
+        if "error" in result:
+            status = HTTPStatus.BAD_REQUEST
+        else:
+            status = HTTPStatus.OK
+        return result, status
 
 
 if __name__ == "__main__":
