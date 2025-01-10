@@ -1,13 +1,13 @@
 import sqlite3
 from pathlib import Path
-from config import DATABASE_DIR
+from src.config import DATABASE_DIR
 
 
 class DatabaseWorker:
 
     @staticmethod
     def get_db_by_name(db_name: str | int) -> Path:
-        return (Path(DATABASE_DIR) / f"database_{db_name}").with_suffix('db')
+        return (Path(DATABASE_DIR) / f"database_{db_name}").with_suffix('.db')
 
     @classmethod
     def execute_query(cls, db_number: str | int, query: str) -> any:
