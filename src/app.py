@@ -10,7 +10,7 @@ from src.db_worker import DatabaseWorker
 swagger_blueprint = Blueprint("swagger", __name__, url_prefix="/docs")
 
 app = Flask(__name__, template_folder="templates")
-api = Api(app, doc="/swagger")
+api = Api(app, doc="/swagger", validate=True)
 app.register_blueprint(swagger_blueprint)
 
 execute_model = api.model(
@@ -24,7 +24,13 @@ execute_model = api.model(
 
 @api.route("/execute")
 class QueueWorker(Resource):
-    @api.doc(responses={200: "Query executed successfully", 400: "Invalid arguments"})
+    @api.doc(
+        responses={
+            200: "Query executed successfully",
+            400: "Invalid arguments",
+            500: "Internal server error",
+        }
+    )
     @api.expect(execute_model)
     def post(self):
         data = request.json
